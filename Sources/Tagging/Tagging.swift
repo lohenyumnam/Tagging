@@ -215,6 +215,8 @@ extension Tagging {
         let data = matchedData(taggingCharacters: characters, selectedLocation: selectedLocation, taggingText: taggingText)
         currentTaggingRange = data.0
         currentTaggingText = data.1
+        
+        dataSource?.tagging(currentPossible: currentTaggingText, withRangeOf: currentTaggingRange)
     }
     
     private func updateAttributeText(selectedLocation: Int) {

@@ -13,7 +13,7 @@ class TaggingViewController: UIViewController {
     
     // MARK: - Properties
     
-    private var matchedList: [String] = [] {
+    private var suggestedTagableList: [String] = [] {
         didSet {
             tagableTableView.reloadSections(IndexSet(integer: 0), with: .fade)
         }
@@ -74,9 +74,16 @@ class TaggingViewController: UIViewController {
 // MARK: - TaggingDataSource
 
 extension TaggingViewController: TaggingDataSource {
+    func tagging(currentPossible TagText: String?, withRangeOf range: NSRange?) {
+        if let tagText = TagText {
+            print(tagText)
+        }
+    }
+    
+  
     
     func tagging(_ tagging: Tagging, didChangedTagableList tagableList: [String]) {
-        matchedList = tagableList
+        suggestedTagableList = tagableList
     }
     
     func tagging(_ tagging: Tagging, didChangedTaggedList taggedList: [TaggingModel]) {
@@ -94,7 +101,7 @@ extension TaggingViewController: UITableViewDataSource {
             return tagging.taggedList.count
         }
         
-        return matchedList.count
+        return suggestedTagableList.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -107,7 +114,7 @@ extension TaggingViewController: UITableViewDataSource {
         }
         
         let cell = tableView.dequeueReusableCell(withIdentifier: Const.tagableTableViewCell, for: indexPath)
-        cell.textLabel?.text = matchedList[indexPath.row]
+        cell.textLabel?.text = suggestedTagableList[indexPath.row]
         return cell
     }
     
@@ -120,7 +127,7 @@ extension TaggingViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         guard tableView == tagableTableView else {return}
         
-        tagging.updateTaggedList(allText: tagging.textView.text, tagText: matchedList[indexPath.row])
+        tagging.updateTaggedList(allText: tagging.textView.text, tagText: suggestedTagableList[indexPath.row])
         tableView.deselectRow(at: indexPath, animated: true)
     }
     
