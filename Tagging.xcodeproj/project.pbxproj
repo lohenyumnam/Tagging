@@ -19,6 +19,7 @@
 		65B08B0020FD6DE800D19DE8 /* TaggingExampleUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65B08AFE20FD6DE800D19DE8 /* TaggingExampleUITests.swift */; };
 		65E42F8D20FD6C3000175C45 /* Tagging.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6583BE0020E951250047896D /* Tagging.framework */; };
 		65E42F8E20FD6C3000175C45 /* Tagging.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 6583BE0020E951250047896D /* Tagging.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		6CFC8C842230F28600898F42 /* Tagging+Protocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6CFC8C832230F28600898F42 /* Tagging+Protocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -69,6 +70,7 @@
 		65854A8D20E9596800124501 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		65B08AFE20FD6DE800D19DE8 /* TaggingExampleUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaggingExampleUITests.swift; sourceTree = "<group>"; };
 		65B08AFF20FD6DE800D19DE8 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6CFC8C832230F28600898F42 /* Tagging+Protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tagging+Protocol.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -133,6 +135,7 @@
 				656201E121225599000E209D /* Tagging.swift */,
 				656201E22122559A000E209D /* TaggingDataSource.swift */,
 				656201DF21225599000E209D /* TaggingModel.swift */,
+				6CFC8C832230F28600898F42 /* Tagging+Protocol.swift */,
 			);
 			path = Sources;
 			sourceTree = "<group>";
@@ -331,6 +334,7 @@
 				656201E72122559A000E209D /* TaggingDataSource.swift in Sources */,
 				656201E42122559A000E209D /* TaggingModel.swift in Sources */,
 				656201E62122559A000E209D /* Tagging.swift in Sources */,
+				6CFC8C842230F28600898F42 /* Tagging+Protocol.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

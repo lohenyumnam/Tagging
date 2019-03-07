@@ -48,6 +48,7 @@ open class Tagging: UIView {
 //
     public private(set) var taggedList: [TaggingModel] = []
     public weak var dataSource: TaggingDataSource?
+    public weak var delegate: TaggingProtocol?
     
     private var currentTaggingText: String? {
         didSet {
@@ -198,9 +199,11 @@ extension Tagging {
             if char == symbol.first {
                 characters.append(char)
                 tagable = true
+                delegate?.userDidStartTyping(tagableString: true)
                 break
             } else if char == space || char == lineBrak {
                 tagable = false
+                delegate?.userDidStartTyping(tagableString: false)
                 break
             }
             characters.append(char)
@@ -216,7 +219,7 @@ extension Tagging {
         currentTaggingRange = data.0
         currentTaggingText = data.1
         
-        dataSource?.tagging(currentPossible: currentTaggingText, withRangeOf: currentTaggingRange)
+        delegate?.userDidType(tagableString: currentTaggingText, withRangeOf: currentTaggingRange)
     }
     
 //    private func updateAttributeText(selectedLocation: Int) {
