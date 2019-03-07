@@ -34,18 +34,18 @@ open class Tagging: UIView {
     
     open var symbol: String = "@"
     open var tagableList: [String]?
-    open var defaultAttributes: [NSAttributedString.Key: Any] = {
-        return [NSAttributedString.Key.foregroundColor: UIColor.black,
-                NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15),
-                NSAttributedString.Key.underlineStyle: NSNumber(value: 0)]
-    }()
-    open var symbolAttributes: [NSAttributedString.Key: Any] = {
-        return [NSAttributedString.Key.foregroundColor: UIColor.black,
-                NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15),
-                NSAttributedString.Key.underlineStyle: NSNumber(value: 0)]
-    }()
-    open var taggedAttributes: [NSAttributedString.Key: Any] = {return [NSAttributedString.Key.underlineStyle: NSNumber(value: 1)]}()
-    
+//    open var defaultAttributes: [NSAttributedString.Key: Any] = {
+//        return [NSAttributedString.Key.foregroundColor: UIColor.black,
+//                NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15),
+//                NSAttributedString.Key.underlineStyle: NSNumber(value: 0)]
+//    }()
+//    open var symbolAttributes: [NSAttributedString.Key: Any] = {
+//        return [NSAttributedString.Key.foregroundColor: UIColor.black,
+//                NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15),
+//                NSAttributedString.Key.underlineStyle: NSNumber(value: 0)]
+//    }()
+//    open var taggedAttributes: [NSAttributedString.Key: Any] = {return [NSAttributedString.Key.underlineStyle: NSNumber(value: 1)]}()
+//
     public private(set) var taggedList: [TaggingModel] = []
     public weak var dataSource: TaggingDataSource?
     
@@ -105,7 +105,7 @@ open class Tagging: UIView {
         }
         
         textView.text = changed
-        updateAttributeText(selectedLocation: range.location+replace.count)
+//        updateAttributeText(selectedLocation: range.location+replace.count)
         dataSource?.tagging(self, didChangedTaggedList: taggedList)
     }
     
@@ -148,7 +148,7 @@ extension Tagging: UITextViewDelegate {
     
     public func textViewDidChange(_ textView: UITextView) {
         tagging(textView: textView)
-        updateAttributeText(selectedLocation: textView.selectedRange.location)
+//        updateAttributeText(selectedLocation: textView.selectedRange.location)
     }
     
     public func textViewDidChangeSelection(_ textView: UITextView) {
@@ -219,20 +219,20 @@ extension Tagging {
         dataSource?.tagging(currentPossible: currentTaggingText, withRangeOf: currentTaggingRange)
     }
     
-    private func updateAttributeText(selectedLocation: Int) {
-        let attributedString = NSMutableAttributedString(string: textView.text)
-        attributedString.addAttributes(defaultAttributes, range: NSMakeRange(0, textView.text.utf16.count))
-        taggedList.forEach { (model) in
-            let symbolAttributesRange = NSMakeRange(model.range.location, symbol.count)
-            let taggedAttributesRange = NSMakeRange(model.range.location+1, model.range.length-1)
-            
-            attributedString.addAttributes(symbolAttributes, range: symbolAttributesRange)
-            attributedString.addAttributes(taggedAttributes, range: taggedAttributesRange)
-        }
-        
-        textView.attributedText = attributedString
-        textView.selectedRange = NSMakeRange(selectedLocation, 0)
-    }
+//    private func updateAttributeText(selectedLocation: Int) {
+//        let attributedString = NSMutableAttributedString(string: textView.text)
+//        attributedString.addAttributes(defaultAttributes, range: NSMakeRange(0, textView.text.utf16.count))
+//        taggedList.forEach { (model) in
+//            let symbolAttributesRange = NSMakeRange(model.range.location, symbol.count)
+//            let taggedAttributesRange = NSMakeRange(model.range.location+1, model.range.length-1)
+//
+//            attributedString.addAttributes(symbolAttributes, range: symbolAttributesRange)
+//            attributedString.addAttributes(taggedAttributes, range: taggedAttributesRange)
+//        }
+//
+//        textView.attributedText = attributedString
+//        textView.selectedRange = NSMakeRange(selectedLocation, 0)
+//    }
     
     private func updateTaggedList(range: NSRange, textCount: Int) {
         taggedList = taggedList.filter({ (model) -> Bool in
