@@ -11,7 +11,7 @@ import Foundation
 
 public protocol TaggingProtocol: class {
     /// This method will call when user start typing will Bool giving status if the current text is tagable
-    func userDidStartTyping(tagableString isTagable: Bool)
+    func userDidStartTyping(tagableString isTagable: Bool, TextView textView: UITextView)
     func userDidType(tagableString TagText: String?, withRangeOf range: NSRange?)
 }
 

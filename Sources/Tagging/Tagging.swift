@@ -199,11 +199,11 @@ extension Tagging {
             if char == symbol.first {
                 characters.append(char)
                 tagable = true
-                delegate?.userDidStartTyping(tagableString: true)
+                delegate?.userDidStartTyping(tagableString: true, TextView: textView)
                 break
             } else if char == space || char == lineBrak {
                 tagable = false
-                delegate?.userDidStartTyping(tagableString: false)
+                delegate?.userDidStartTyping(tagableString: false, TextView: textView)
                 break
             }
             characters.append(char)
