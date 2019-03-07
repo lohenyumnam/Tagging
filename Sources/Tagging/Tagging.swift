@@ -150,6 +150,7 @@ extension Tagging: UITextViewDelegate {
     public func textViewDidChange(_ textView: UITextView) {
         tagging(textView: textView)
 //        updateAttributeText(selectedLocation: textView.selectedRange.location)
+        delegate?.tagingTextViewDidChange(textView)
     }
     
     public func textViewDidChangeSelection(_ textView: UITextView) {
