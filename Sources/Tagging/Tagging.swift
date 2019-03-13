@@ -200,7 +200,7 @@ extension Tagging {
                 characters.append(char)
                 tagable = true
                 currentTagSymbol = "\(char)"
-                print("Current Symbol: ", currentTagSymbol)
+//                print("Current Symbol: ", currentTagSymbol) 
                 delegate?.userDidStartTyping(tagableString: true, withTagSymbol: currentTagSymbol, TextView: textView)
                 break
             } else if char == space || char == lineBrak {
