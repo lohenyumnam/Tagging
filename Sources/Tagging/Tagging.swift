@@ -9,22 +9,18 @@ open class Tagging: UIView {
         get { return textView.layer.cornerRadius }
         set { textView.layer.cornerRadius = newValue }
     }
-    
     open var borderWidth: CGFloat {
         get { return textView.layer.borderWidth }
         set { textView.layer.borderWidth = newValue }
     }
-    
     open var borderColor: CGColor? {
         get { return textView.layer.borderColor }
         set { textView.layer.borderColor = newValue }
     }
-    
     open var textInset: UIEdgeInsets {
         get { return textView.textContainerInset }
         set { textView.textContainerInset = newValue }
     }
-    
     override open var backgroundColor: UIColor? {
         get { return textView.backgroundColor }
         set { textView.backgroundColor = newValue }
@@ -32,20 +28,11 @@ open class Tagging: UIView {
     
     // MARK: - Properties
     
-    open var symbol: String = "@"
+    open var symbols: [String] = ["@", "#"]
+    /// Current tag symbol
+    open var currentTagSymbol: String = ""
     open var tagableList: [String]?
-//    open var defaultAttributes: [NSAttributedString.Key: Any] = {
-//        return [NSAttributedString.Key.foregroundColor: UIColor.black,
-//                NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15),
-//                NSAttributedString.Key.underlineStyle: NSNumber(value: 0)]
-//    }()
-//    open var symbolAttributes: [NSAttributedString.Key: Any] = {
-//        return [NSAttributedString.Key.foregroundColor: UIColor.black,
-//                NSAttributedString.Key.font: UIFont.boldSystemFont(ofSize: 15),
-//                NSAttributedString.Key.underlineStyle: NSNumber(value: 0)]
-//    }()
-//    open var taggedAttributes: [NSAttributedString.Key: Any] = {return [NSAttributedString.Key.underlineStyle: NSNumber(value: 1)]}()
-//
+    
     public private(set) var taggedList: [TaggingModel] = []
     public weak var dataSource: TaggingDataSource?
     public weak var delegate: TaggingProtocol?
@@ -60,7 +47,18 @@ open class Tagging: UIView {
         }
     }
     private var currentTaggingRange: NSRange?
-    private var tagRegex: NSRegularExpression! {return try! NSRegularExpression(pattern: "\(symbol)([^\\s\\K]+)")}
+    
+    // This Regex will search for string which contain "a to z, A to Z, 0 to 9, and _" that start with one of "symbols"
+    private lazy var tagRegex: NSRegularExpression! = {
+        let symobols: String = {
+            var temp: String = ""
+            for s in self.symbols {
+                temp.append(s.first!)
+            }
+            return temp
+        }()
+        return try! NSRegularExpression(pattern: "[\(symobols)][a-zA-Z0-9_]+")
+    }()
     
     // MARK: - UI Components
     
@@ -74,13 +72,11 @@ open class Tagging: UIView {
     
     public init() {
         super.init(frame: .zero)
-        
         commonSetup()
     }
     
     public required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
-        
         commonSetup()
     }
     
@@ -106,7 +102,7 @@ open class Tagging: UIView {
         }
         
         textView.text = changed
-//        updateAttributeText(selectedLocation: range.location+replace.count)
+        //        updateAttributeText(selectedLocation: range.location+replace.count)
         dataSource?.tagging(self, didChangedTaggedList: taggedList)
     }
     
@@ -124,7 +120,9 @@ open class Tagging: UIView {
     }
     
     private func tagFormat(_ text: String) -> String {
-        return symbol.appending(text)
+        //        return symbol.appending(text)
+        #warning("symbol change")
+        return currentTagSymbol.appending(text)
     }
     
 }
@@ -143,31 +141,32 @@ extension Tagging {
     
 }
 
-// MARK: - UITextViewDelegate
 
-extension Tagging: UITextViewDelegate {
-    
-    public func textViewDidChange(_ textView: UITextView) {
-        tagging(textView: textView)
-//        updateAttributeText(selectedLocation: textView.selectedRange.location)
-        delegate?.tagingTextViewDidChange(textView)
-    }
-    
-    public func textViewDidChangeSelection(_ textView: UITextView) {
-        tagging(textView: textView)
-    }
-    
-    public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        updateTaggedList(range: range, textCount: text.utf16.count)
-        delegate?.taggingDidUpdateFromList(textView)
-        return true
-    }
-    
-}
 
 // MARK: - Tagging Algorithm
 
 extension Tagging {
+    
+    /// check if the current text is equal to one of the symbols
+    func oneOfSymbolIs(text: String) -> Bool {
+        for s in symbols {
+            if s == text {
+                return true
+            }
+        }
+        return false
+    }
+    
+    /// check if the current char is equal to one of the symbols
+    func oneOfSymbolIs(char: Character) -> Bool {
+        for s in symbols {
+            if s.first == char {
+                return true
+            }
+        }
+        return false
+    }
+    
     
     private func matchedData(taggingCharacters: [Character], selectedLocation: Int, taggingText: String) -> (NSRange?, String?) {
         var matchedRange: NSRange?
@@ -175,17 +174,18 @@ extension Tagging {
         let tag = String(taggingCharacters.reversed())
         let textRange = NSMakeRange(selectedLocation-tag.count, tag.count)
         
-        guard tag == symbol else {
+        guard oneOfSymbolIs(text: tag) else {
             let matched = tagRegex.matches(in: taggingText, options: .reportCompletion, range: textRange)
             if matched.count > 0, let range = matched.last?.range {
                 matchedRange = range
-                matchedString = (taggingText as NSString).substring(with: range).replacingOccurrences(of: symbol, with: "")
+                matchedString = (taggingText as NSString).substring(with: range).replacingOccurrences(of: currentTagSymbol, with: "")
             }
             return (matchedRange, matchedString)
         }
         
         matchedRange = textRange
-        matchedString = symbol
+        
+        matchedString = tag
         return (matchedRange, matchedString)
     }
     
@@ -198,14 +198,17 @@ extension Tagging {
         var characters: [Character] = []
         
         for char in Array(taggingText).reversed() {
-            if char == symbol.first {
+            if oneOfSymbolIs(char: char){
                 characters.append(char)
                 tagable = true
-                delegate?.userDidStartTyping(tagableString: true, TextView: textView)
+                currentTagSymbol = "\(char)"
+                print("Current Symbol: ", currentTagSymbol)
+                delegate?.userDidStartTyping(tagableString: true, withTagSymbol: currentTagSymbol, TextView: textView)
                 break
             } else if char == space || char == lineBrak {
                 tagable = false
-                delegate?.userDidStartTyping(tagableString: false, TextView: textView)
+                currentTagSymbol = ""
+                delegate?.userDidStartTyping(tagableString: false, withTagSymbol: currentTagSymbol, TextView: textView)
                 break
             }
             characters.append(char)
@@ -224,20 +227,6 @@ extension Tagging {
         delegate?.userDidType(tagableString: currentTaggingText, withRangeOf: currentTaggingRange)
     }
     
-//    private func updateAttributeText(selectedLocation: Int) {
-//        let attributedString = NSMutableAttributedString(string: textView.text)
-//        attributedString.addAttributes(defaultAttributes, range: NSMakeRange(0, textView.text.utf16.count))
-//        taggedList.forEach { (model) in
-//            let symbolAttributesRange = NSMakeRange(model.range.location, symbol.count)
-//            let taggedAttributesRange = NSMakeRange(model.range.location+1, model.range.length-1)
-//
-//            attributedString.addAttributes(symbolAttributes, range: symbolAttributesRange)
-//            attributedString.addAttributes(taggedAttributes, range: taggedAttributesRange)
-//        }
-//
-//        textView.attributedText = attributedString
-//        textView.selectedRange = NSMakeRange(selectedLocation, 0)
-//    }
     
     private func updateTaggedList(range: NSRange, textCount: Int) {
         taggedList = taggedList.filter({ (model) -> Bool in
@@ -271,6 +260,30 @@ extension Tagging {
         
         currentTaggingText = nil
         dataSource?.tagging(self, didChangedTaggedList: taggedList)
+    }
+    
+}
+
+
+// MARK: - UITextViewDelegate
+
+extension Tagging: UITextViewDelegate {
+    
+    public func textViewDidChange(_ textView: UITextView) {
+        tagging(textView: textView)
+        delegate?.tagingTextViewDidChange(textView)
+    }
+    
+    public func textViewDidChangeSelection(_ textView: UITextView) {
+        tagging(textView: textView)
+    }
+    
+    public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        print("replacementText: ", text)
+        print("range: ", range)
+        updateTaggedList(range: range, textCount: text.utf16.count)
+        delegate?.taggingDidUpdateFromList(textView)
+        return true
     }
     
 }

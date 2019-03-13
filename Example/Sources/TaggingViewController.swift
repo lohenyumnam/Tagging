@@ -40,8 +40,8 @@ class TaggingViewController: UIViewController {
 //            tagging.taggedAttributes = [NSAttributedStringKey.foregroundColor: UIColor.gray, NSAttributedStringKey.underlineStyle: NSNumber(value: 1)]
             tagging.dataSource = self
             
-            tagging.symbol = "#"
-            tagging.tagableList = ["DOOMFIST", "GENJI", "MCCREE", "PHARAH", "REAPER", "SOLDIER:76", "SOMBRA", "TRACER", "BASTION", "HANZO", "JUNKRAT", "MEI", "TORBJORN", "WIDOWMAKER", "D.VA", "ORISA", "REINHARDT", "ROADHOG", "WINSTON", "ZARYA", "ANA", "BRIGITTE", "LUCIO", "MERCY", "MOIRA", "SYMMETRA", "ZENYATTA"]
+            tagging.symbols = ["#","@", "$","*"]
+            tagging.tagableList = ["_DOOMFIST", "GE_NJI", "MCCREE", "PHARAH", "REAPER", "SOLDIER:76", "SOMBRA", "TRACER", "BASTION", "HANZO", "JUNKRAT", "MEI", "TORBJORN", "WIDOWMAKER", "D.VA", "ORISA", "REINHARDT", "ROADHOG", "WINSTON", "ZARYA", "ANA", "BRIGITTE", "LUCIO", "MERCY", "MOIRA", "SYMMETRA", "ZENYATTA"]
         }
     }
     @IBOutlet weak var tagableTableView: UITableView! {
