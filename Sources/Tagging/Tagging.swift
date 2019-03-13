@@ -277,8 +277,8 @@ extension Tagging: UITextViewDelegate {
     }
     
     public func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
-        print("replacementText: ", text)
-        print("range: ", range)
+//        print("replacementText: ", text)
+//        print("range: ", range)
         updateTaggedList(range: range, textCount: text.utf16.count)
         delegate?.taggingDidUpdateFromList(textView)
         return true
