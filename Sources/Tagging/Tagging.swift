@@ -120,8 +120,6 @@ open class Tagging: UIView {
     }
     
     private func tagFormat(_ text: String) -> String {
-        //        return symbol.appending(text)
-        #warning("symbol change")
         return currentTagSymbol.appending(text)
     }
     
