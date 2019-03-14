@@ -70,6 +70,7 @@
 		65854A8D20E9596800124501 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		65B08AFE20FD6DE800D19DE8 /* TaggingExampleUITests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TaggingExampleUITests.swift; sourceTree = "<group>"; };
 		65B08AFF20FD6DE800D19DE8 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		6C6BAF01223A4EE1004139FE /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		6CFC8C832230F28600898F42 /* Tagging+Protocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Tagging+Protocol.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -136,6 +137,7 @@
 				656201E22122559A000E209D /* TaggingDataSource.swift */,
 				656201DF21225599000E209D /* TaggingModel.swift */,
 				6CFC8C832230F28600898F42 /* Tagging+Protocol.swift */,
+				6C6BAF01223A4EE1004139FE /* CHANGELOG.md */,
 			);
 			path = Sources;
 			sourceTree = "<group>";

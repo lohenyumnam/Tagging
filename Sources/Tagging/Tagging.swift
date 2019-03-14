@@ -201,12 +201,12 @@ extension Tagging {
                 tagable = true
                 currentTagSymbol = "\(char)"
 //                print("Current Symbol: ", currentTagSymbol) 
-                delegate?.userDidStartTyping(tagableString: true, withTagSymbol: currentTagSymbol, TextView: textView)
+                delegate?.userDidStartTyping(tagableString: true, TextView: textView)
                 break
             } else if char == space || char == lineBrak {
                 tagable = false
                 currentTagSymbol = ""
-                delegate?.userDidStartTyping(tagableString: false, withTagSymbol: currentTagSymbol, TextView: textView)
+                delegate?.userDidStartTyping(tagableString: false, TextView: textView)
                 break
             }
             characters.append(char)
@@ -222,7 +222,7 @@ extension Tagging {
         currentTaggingRange = data.0
         currentTaggingText = data.1
         
-        delegate?.userDidType(tagableString: currentTaggingText, withRangeOf: currentTaggingRange)
+        delegate?.userDidType(tagableString: currentTaggingText, withTagSymbol: currentTagSymbol, withRangeOf: currentTaggingRange)
     }
     
     
